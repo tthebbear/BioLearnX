@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BioLearnX | Master the Future of Science</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body>
+    <!-- Background Canvas for Three.js -->
+    <div id="canvas-container"></div>
+
+    <nav class="navbar">
+        <div class="nav-left">
+            <button class="menu-toggle" id="menu-open">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+            <div class="logo-container">
+                <div class="logo">BIOLEARNX</div>
+                <div class="logo-subtitle">Formación Especializada</div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Full-screen Menu Overlay -->
+    <div class="overlay-menu" id="overlay-menu">
+        <div class="menu-top-left">
+            <div class="logo-container">
+                <div class="logo">BIOLEARNX</div>
+                <div class="logo-subtitle">Formación Especializada</div>
+            </div>
+        </div>
+        <button class="menu-close" id="menu-close">✕</button>
+        <div class="menu-content-wrapper">
+            <ul class="menu-links">
+                <li><a href="#" id="link-nosotros">Nosotros</a></li>
+                <li><a href="#" id="link-cursos">Cursos</a></li>
+                <li><a href="javascript:void(0)" class="disabled-link">Webinars <span class="badge-proximamente">Próximamente</span></a></li>
+                <li><a href="#" id="link-certificados">Certificados</a></li>
+                <li><a href="#" id="link-ayuda">¿Ayuda?</a></li>
+            </ul>
+        </div>
+        
+        <div class="menu-footer">
+            <div class="menu-socials">
+                <a href="#"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm3.98-10.834a1.44 1.44 0 110 2.88 1.44 1.44 0 010-2.88z"/></svg></a>
+                <a href="javascript:void(0)" onclick="openWhatsAppContact()"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.898-4.45 9.898-9.896 0-2.679-1.043-5.198-2.937-7.092-1.894-1.894-4.414-2.937-7.091-2.937-5.45 0-9.898 4.45-9.898 9.896 0 2.069.546 4.055 1.588 5.824l-1.129 4.12 4.225-1.109zm8.566-6.425c-.324-.162-1.916-.948-2.213-1.056-.296-.109-.512-.162-.727.162-.216.324-.848 1.056-1.039 1.272-.191.216-.381.243-.705.081-1.901-.947-3.328-1.93-4.596-3.882-.217-.325-.024-.501.138-.663.146-.145.324-.378.486-.567.162-.189.216-.324.324-.54.108-.216.054-.405-.027-.567-.081-.162-.727-1.755-.996-2.403-.263-.631-.53-.545-.727-.555-.191-.01-.41-.012-.626-.012-.216 0-.568.081-.865.405-.297.324-1.135 1.107-1.135 2.699 0 1.593 1.162 3.132 1.324 3.348.162.216 2.278 3.478 5.518 4.872.771.332 1.373.53 1.84.679.773.245 1.478.21 2.034.128.625-.093 1.916-.782 2.186-1.538.27-.756.27-1.404.19-1.54-.081-.135-.297-.216-.621-.378z"/></svg></a>
+            </div>
+            <p><a href="terminos.html" style="color:inherit; text-decoration:none;" target="_blank">Términos y Condiciones</a> | <a href="privacidad.html" style="color:inherit; text-decoration:none;" target="_blank">Política de Privacidad</a></p>
+        </div>
+    </div>
+
+    <!-- Nosotros Overlay Panel -->
+    <div class="overlay-nosotros" id="overlay-nosotros">
+        <div class="nosotros-actions">
+            <button class="nosotros-back" id="nosotros-back"><span>&larr;</span> Volver al menú</button>
+            <button class="nosotros-close" id="nosotros-close">✕</button>
+        </div>
+        <div class="nosotros-container">
+            <h2 class="nosotros-header">Conoce más sobre nuestra misión y valores</h2>
+            
+            <div class="nosotros-grid-top">
+                <div class="nosotros-card panel-card">
+                    <h3 class="n-card-title">Misión</h3>
+                    <p>Formar profesionales mediante soluciones integrales en el campo de la Bioquímica y Farmacia a través de análisis especializados, asesorías técnicas, herramientas innovadoras y compromiso con la salud y bienestar.</p>
+                    <p class="quote">"Trabajamos para ser el puente entre la ciencia y la aplicación práctica."</p>
+                </div>
+                <div class="nosotros-card panel-card">
+                    <h3 class="n-card-title">Visión</h3>
+                    <p>Ser líderes en la innovación, desarrollo e investigación, reconocida por su excelencia, ética profesional, mejora de procesos clínicos, convergencia de la tecnología y farmacéutica.</p>
+                </div>
+            </div>
+
+            <div class="nosotros-card panel-card team-card">
+                <h3 class="n-card-title text-center">Nuestro Equipo</h3>
+                <div class="team-grid">
+                    <div class="team-member">
+                        <div class="avatar">👤</div>
+                        <h4>M. Sc. BF. Gordón Daniel</h4>
+                        <span>Director Académico</span>
+                    </div>
+                    <div class="team-member">
+                        <div class="avatar">👤</div>
+                        <h4>BF. Cartagena Genesis</h4>
+                        <span>Coordinadora Académica</span>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ayuda Overlay Panel -->
+    <div class="overlay-nosotros" id="overlay-ayuda">
+        <div class="nosotros-actions">
+            <button class="nosotros-back btn-back-ayuda"><span>&larr;</span> Volver al menú</button>
+            <button class="nosotros-close btn-close-ayuda">✕</button>
+        </div>
+        <div class="nosotros-container">
+            <h2 class="nosotros-header">Para acercarnos mucho más</h2>
+            
+            <div class="nosotros-grid-top action-grid">
+                <div class="nosotros-card panel-card text-center">
+                    <div class="icon-large red-text">💬</div>
+                    <h3 class="n-card-title no-border">Contáctanos</h3>
+                    <button class="card-btn btn-red" onclick="openWhatsAppContact()">Contactarme Ahora</button>
+                </div>
+                <div class="nosotros-card panel-card text-center">
+                    <div class="icon-large red-text">👥</div>
+                    <h3 class="n-card-title no-border">Comunidad BioLearnX</h3>
+                    <p>Únete a la comunidad para que estés al tanto de todas las actualizaciones</p>
+                    <button class="card-btn btn-blue" onclick="window.open('https://chat.whatsapp.com/IZIU6fbyx6oLctD2YvfBFQ', '_blank')">Unirme Ahora</button>
+                </div>
+                <div class="nosotros-card panel-card text-center">
+                    <div class="icon-large red-text">📧</div>
+                    <h3 class="n-card-title no-border">Correo Electrónico</h3>
+                    <p>biolearnx@gmail.com</p>
+                    <button class="card-btn btn-green" onclick="copyEmail(this)">Gestión Interna</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cursos Overlay Panel -->
+    <div class="overlay-nosotros" id="overlay-cursos">
+        <div class="nosotros-actions">
+            <button class="nosotros-back btn-back-cursos"><span>&larr;</span> Volver al menú</button>
+            <button class="nosotros-close btn-close-cursos">✕</button>
+        </div>
+        <div class="nosotros-container" style="max-width:1300px;">
+            <h2 class="nosotros-header">Nuestros Programas de Formación</h2>
+            
+            <div class="course-grid">
+                <!-- Course Card 1 -->
+                <div class="nosotros-card panel-card course-card">
+                    <div class="course-banner" style="background: linear-gradient(45deg, #1a2a6c, #b21f1f, #fdbb2d); height: 150px; border-radius: 10px; margin-bottom: 15px; border: 1px solid var(--glass-border);"></div>
+                    <div class="course-badge">Control de Calidad</div>
+                    <h3 class="n-card-title no-border" style="font-size:1.1rem; margin-top:10px;">Gestión de Calidad en Laboratorios</h3>
+                    <p style="font-size:0.85rem; color:#ccc;"><strong>Inicio:</strong> Próximamente</p>
+                    <p style="font-size:0.9rem; margin-bottom:20px;">Aprende los estándares internacionales y normativas para asegurar la calidad de productos farmacéuticos.</p>
+                    <div style="display:flex; flex-direction:column; gap:10px;">
+                        <button class="card-btn btn-outline" style="margin-top:0; padding:0.5rem;" onclick="window.open('#', '_blank')">Preguntas Frecuentes</button>
+                        <button class="card-btn btn-blue" style="margin-top:0; padding:0.5rem;" onclick="window.open('#', '_blank')">Descargar Brochure</button>
+                        <button class="card-btn btn-green" style="margin-top:0; padding:0.5rem;" onclick="openCourseWhatsApp('Gestión de Calidad en Laboratorios')">Contactarme</button>
+                    </div>
+                </div>
+                <!-- Course Card 2 -->
+                <div class="nosotros-card panel-card course-card">
+                    <div class="course-banner" style="background: linear-gradient(45deg, #0f2027, #203a43, #2c5364); height: 150px; border-radius: 10px; margin-bottom: 15px; border: 1px solid var(--glass-border);"></div>
+                    <div class="course-badge">Laboratorio Clínico</div>
+                    <h3 class="n-card-title no-border" style="font-size:1.1rem; margin-top:10px;">Análisis Clínicos Avanzados</h3>
+                    <p style="font-size:0.85rem; color:#ccc;"><strong>Inicio:</strong> Próximamente</p>
+                    <p style="font-size:0.9rem; margin-bottom:20px;">Domina las técnicas más modernas y especializadas para el diagnóstico clínico de precisión y bioanálisis.</p>
+                    <div style="display:flex; flex-direction:column; gap:10px;">
+                        <button class="card-btn btn-outline" style="margin-top:0; padding:0.5rem;" onclick="window.open('#', '_blank')">Preguntas Frecuentes</button>
+                        <button class="card-btn btn-blue" style="margin-top:0; padding:0.5rem;" onclick="window.open('#', '_blank')">Descargar Brochure</button>
+                        <button class="card-btn btn-green" style="margin-top:0; padding:0.5rem;" onclick="openCourseWhatsApp('Análisis Clínicos Avanzados')">Contactarme</button>
+                    </div>
+                </div>
+                <!-- Course Card 3 -->
+                <div class="nosotros-card panel-card course-card">
+                    <div class="course-banner" style="background: linear-gradient(45deg, #11998e, #38ef7d); height: 150px; border-radius: 10px; margin-bottom: 15px; border: 1px solid var(--glass-border);"></div>
+                    <div class="course-badge">Asuntos Regulatorios</div>
+                    <h3 class="n-card-title no-border" style="font-size:1.1rem; margin-top:10px;">Asuntos Regulatorios de Fármacos</h3>
+                    <p style="font-size:0.85rem; color:#ccc;"><strong>Inicio:</strong> Próximamente</p>
+                    <p style="font-size:0.9rem; margin-bottom:20px;">Conoce el marco legal y procesos de registro sanitario para la comercialización segura.</p>
+                    <div style="display:flex; flex-direction:column; gap:10px;">
+                        <button class="card-btn btn-outline" style="margin-top:0; padding:0.5rem;" onclick="window.open('#', '_blank')">Preguntas Frecuentes</button>
+                        <button class="card-btn btn-blue" style="margin-top:0; padding:0.5rem;" onclick="window.open('#', '_blank')">Descargar Brochure</button>
+                        <button class="card-btn btn-green" style="margin-top:0; padding:0.5rem;" onclick="openCourseWhatsApp('Asuntos Regulatorios de Fármacos')">Contactarme</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Certificados Overlay Panel -->
+    <div class="overlay-nosotros" id="overlay-certificados">
+        <div class="nosotros-actions">
+            <button class="nosotros-back btn-back-certificados"><span>&larr;</span> Volver al menú</button>
+            <button class="nosotros-close btn-close-certificados">✕</button>
+        </div>
+        <div class="nosotros-container">
+            <h2 class="nosotros-header">Verifica y descarga tus certificados de participación</h2>
+            
+            <div class="nosotros-grid-top action-grid">
+                <div class="nosotros-card panel-card text-center">
+                    <div class="icon-large">📥</div>
+                    <h3 class="n-card-title no-border">Descargar Certificado</h3>
+                    <p>Accede a tu certificado digital con tu usuario y contraseña</p>
+                    <button class="card-btn btn-blue" id="btn-open-buscar">Descargar Ahora</button>
+                </div>
+                <div class="nosotros-card panel-card text-center">
+                    <div class="icon-large">❓</div>
+                    <h3 class="n-card-title no-border">Ayuda con Certificados</h3>
+                    <p>¿Problemas con tu certificado? Contáctanos para ayudarte</p>
+                    <button class="card-btn btn-green" onclick="openCertHelpWhatsApp()">Solicitar Ayuda</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Buscar Certificado Overlay Panel -->
+    <div class="overlay-nosotros" id="overlay-buscar-certificado">
+        <div class="nosotros-actions">
+            <button class="nosotros-back btn-back-buscar-cert"><span>&larr;</span> Volver</button>
+            <button class="nosotros-close btn-close-buscar-cert">✕</button>
+        </div>
+        <div class="nosotros-container" style="max-width: 600px; display: flex; justify-content: center;">
+            <div class="nosotros-card panel-card text-center" style="width: 100%;">
+                <div style="display:flex; justify-content:center; align-items:center; gap:15px; margin-bottom:20px;">
+                    <img src="images/favicon-32x32.png" alt="BioLearnX Logo" style="height:40px; filter: drop-shadow(0 0 5px rgba(255, 190, 11, 0.4));">
+                    <h2 class="nosotros-header" style="margin:0; font-size:1.5rem;">BIOLEARNX</h2>
+                </div>
+                <h3 class="n-card-title no-border" style="font-size:1.3rem;">Certificados Digitales</h3>
+                <p style="font-size:0.95rem; margin-bottom:1.5rem;">Ingrese su número de cédula o pasaporte para buscar y descargar su certificado validado.</p>
+                
+                <form id="cert-form">
+                    <div style="display:flex; gap:10px;">
+                        <input type="text" id="cedula" placeholder="Número de identificación..." required style="flex:1; padding:12px; border-radius:8px; border:1px solid rgba(255, 190, 11, 0.3); background:rgba(0,0,0,0.5); color:white; outline:none; font-family:'Inter', sans-serif;">
+                        <button type="submit" class="card-btn btn-blue" style="margin-top:0; padding:12px 25px; border-radius:8px; width:auto;">Buscar</button>
+                    </div>
+                </form>
+
+                <div id="resultado" style="margin-top:1.5rem; padding:1.5rem; border-radius:10px; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); text-align:left; display:none; font-family:'Inter', sans-serif; line-height:1.6;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scroll Vertical Navigation -->
+    <div class="vertical-nav">
+        <div class="nav-dot active" data-index="0">
+            <span class="dot-label">INICIO</span>
+            <div class="dot-wrapper">
+                <div class="dot-inner"></div>
+            </div>
+        </div>
+        <div class="nav-dot" data-index="1">
+            <span class="dot-label">EXPERIENCIA</span>
+            <div class="dot-wrapper">
+                <div class="dot-inner"></div>
+            </div>
+        </div>
+        <div class="nav-dot" data-index="2">
+            <span class="dot-label">ÁREAS</span>
+            <div class="dot-wrapper">
+                <div class="dot-inner"></div>
+            </div>
+        </div>
+        <div class="nav-dot" data-index="3">
+            <span class="dot-label">FAQ</span>
+            <div class="dot-wrapper">
+                <div class="dot-inner"></div>
+            </div>
+        </div>
+        <div class="nav-dot" data-index="4">
+            <span class="dot-label">UNIRSE</span>
+            <div class="dot-wrapper">
+                <div class="dot-inner"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="scroll-container">
+        <!-- Hero -->
+        <section class="panel hero">
+            <h1 class="stagger-text">
+                <span class="line">EL FUTURO</span>
+                <span class="line highlight">ESTÁ EN NUESTRO ADN</span>
+            </h1>
+            <p class="subtitle">Descubre la formación inmersiva en la ciencia del mañana.</p>
+            <div class="scroll-indicator">Baja para explorar</div>
+        </section>
+
+        <!-- Intro -->
+        <section class="panel intro">
+            <h2 class="massive-text fade-text">NO ES SOLO CIENCIA.</h2>
+            <h2 class="massive-text fade-text gold-text">ES EXPERIENCIA VIRTUAL.</h2>
+            <p class="fade-text">BioLearnX es el ecosistema élite de educación para bioquímica, ciencias farmacéuticas y práctica clínica. Sumérgete en el laboratorio del futuro interactuando directamente con nuestra plataforma tecnológica revolucionaria.</p>
+        </section>
+
+        <!-- Areas -->
+        <section class="panel areas">
+            <h2 class="section-title fade-text">Domina las Especialidades</h2>
+            <div class="glass-cards">
+                <div class="card">
+                    <span class="icon">💊</span>
+                    <h3>Bioquímica Farmacéutica</h3>
+                </div>
+                <div class="card">
+                    <span class="icon">✅</span>
+                    <h3>Control de Calidad</h3>
+                </div>
+                <div class="card">
+                    <span class="icon">⚖️</span>
+                    <h3>Asuntos Regulatorios</h3>
+                </div>
+                <div class="card">
+                    <span class="icon">🔬</span>
+                    <h3>Laboratorio Clínico</h3>
+                </div>
+                <div class="card">
+                    <span class="icon">⚙️</span>
+                    <h3>Sistemas de Gestión</h3>
+                </div>
+                <div class="card">
+                    <span class="icon">🏭</span>
+                    <h3>Producción Farmacéutica</h3>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ -->
+        <section class="panel faq">
+            <h2 class="section-title fade-text">Preguntas Frecuentes</h2>
+            <div class="accordion fade-text">
+                <div class="accordion-item">
+                    <button class="accordion-header">¿Qué plataformas se utilizan para los cursos y webinars? <span class="acc-icon">+</span></button>
+                    <div class="accordion-content">
+                        <p>Nuestra educación virtual 100% interactiva se apoya en interfaces avanzadas, acompañadas de sesiones en vivo y asesorías directas transmitidas a través de un ecosistema seguro usando <strong>Zoom o Google Meet</strong> para garantizar una experiencia óptima.</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header">¿Qué aval tienen los certificados emitidos? <span class="acc-icon">+</span></button>
+                    <div class="accordion-content">
+                        <p>Tienen respaldo de total peso académico y profesional. Todos nuestros certificados cuentan explícitamente con el <strong>Aval del Ministerio del Trabajo</strong>, y están firmados y respaldados oficialmente por la <strong>Facultad de Ciencias Químicas de la Universidad Central del Ecuador</strong>.</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header">¿Cuál es la duración de las especialidades? <span class="acc-icon">+</span></button>
+                    <div class="accordion-content">
+                        <p>Todos nuestros programas cuentan con una estructura asíncrona y flexible diseñada para completarse integralmente en periodos que abarcan de 3 a 6 meses.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Outro -->
+        <section class="panel outro">
+            <h1 class="stagger-text fade-text">
+                <span class="line">ÚNETE A LA</span>
+                <span class="line gold-text">REVOLUCIÓN CIENTÍFICA</span>
+            </h1>
+            <div class="outro-buttons fade-text">
+                <button class="cta-button massive-cta" onclick="window.open('https://whatsapp.com/channel/0029Vb7mtQ13wtazPASGMI2T', '_blank')">Canal BioLearnX</button>
+                <button class="cta-button massive-cta btn-outline" onclick="window.open('https://chat.whatsapp.com/IZIU6fbyx6oLctD2YvfBFQ', '_blank')">Comunidad BioLearnX</button>
+                <button class="cta-button massive-cta btn-outline" onclick="openWhatsAppContact()">Contáctanos</button>
+                <button class="cta-button massive-cta" onclick="document.getElementById('overlay-menu').classList.add('open')">Programas de formación</button>
+            </div>
+            <footer class="outro-footer">
+                <p><a href="terminos.html" style="color:inherit; text-decoration:none;" target="_blank">Términos y Condiciones</a> | <a href="privacidad.html" style="color:inherit; text-decoration:none;" target="_blank">Política de Privacidad</a></p>
+                <p>©2026 BioLearnX | Todos los derechos reservados.</p>
+            </footer>
+            
+            <!-- Bear.IO Logo -->
+            <a href="javascript:void(0)" onclick="openBearWhatsApp()" class="bear-logo-link">
+                <img src="images/bearlogo.png" alt="Bear.IO Developer" class="bear-logo">
+            </a>
+        </section>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
